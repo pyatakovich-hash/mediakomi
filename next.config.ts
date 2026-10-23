@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
 
+// Сборка для GitHub Pages: статический экспорт в папку out/ с префиксом /mediakomi.
+// Включается переменной GITHUB_PAGES=true (см. .github/workflows/pages.yml).
+const isPages = process.env.GITHUB_PAGES === "true";
+const basePath = isPages ? (process.env.PAGES_BASE_PATH ?? "/mediakomi") : "";
+
 // Строгий CSP: в продакшене страница не содержит inline-скриптов (Pages Router),
 // поэтому script-src 'self' без nonce. В dev Next нужны eval и HMR по websocket.
 const csp = [
@@ -31,9 +36,17 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+  env: {
+    MK_BASE_PATH: basePath,
+    MK_STATIC_EXPORT: isPages ? "1" : "",
   },
+  ...(isPages
+    ? { output: "export" as const, basePath, trailingSlash: true }
+    : {
+        async headers() {
+          return [{ source: "/:path*", headers: securityHeaders }];
+        },
+      }),
 };
 
 export default nextConfig;

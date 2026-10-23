@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import flatsData from "@/data/flats.json";
+import { withBase } from "@/config";
 import { Building } from "@/components/Building";
 import { Footer } from "@/components/Footer";
 import { Gallery } from "@/components/Gallery";
@@ -24,7 +25,7 @@ const FLATS = flatsData as Flat[];
 type Phase = "start" | "guess" | "reveal" | "result";
 
 function preload(src?: string) {
-  if (src) new Image().src = src;
+  if (src) new Image().src = withBase(src);
 }
 
 export default function Home() {

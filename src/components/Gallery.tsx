@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { withBase } from "@/config";
 
 type Props = { photos: string[]; alt: string };
 
@@ -45,14 +46,14 @@ export function Gallery({ photos, alt }: Props) {
                 <>
                   {/* то же фото размытым фоном: кадр виден целиком при любой высоте экрана */}
                   <img
-                    src={src}
+                    src={withBase(src)}
                     alt=""
                     aria-hidden
                     className="absolute inset-0 h-full w-full scale-110 object-cover opacity-70 blur-xl"
                     draggable={false}
                   />
                   <img
-                    src={src}
+                    src={withBase(src)}
                     alt={`${alt}, фото ${i + 1} из ${photos.length}`}
                     className="relative h-full w-full object-contain"
                     draggable={false}

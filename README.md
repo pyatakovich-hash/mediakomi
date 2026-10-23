@@ -50,6 +50,14 @@ Vercel:
 2. На vercel.com: Add New → Project → импортировать репозиторий. Настройки по умолчанию (Framework: Next.js, Build Command: `npm run build`).
 3. Ссылка «Код на GitHub» в подвале берётся из `src/config.ts`; её можно переопределить переменной окружения `NEXT_PUBLIC_REPO_URL`.
 
+GitHub Pages (публикация прямо из репозитория, `.github/workflows/pages.yml`):
+
+1. В репозитории: Settings → Pages → Build and deployment → Source: GitHub Actions.
+2. Actions → «Deploy to GitHub Pages» → Run workflow. Дальше сайт обновляется сам при каждом пуше в `main`.
+3. Адрес: `https://<пользователь>.github.io/mediakomi/`.
+
+GitHub Pages не позволяет задавать свои HTTP-заголовки, поэтому там CSP и Referrer-Policy работают через meta-теги, а `X-Frame-Options`, `nosniff` и `Permissions-Policy` будут только на Vercel или другом хостинге с настройкой заголовков.
+
 Любой хостинг с Node.js: `npm ci && npm run build && npm start` (порт задаётся переменной `PORT`).
 
 ## Безопасность
