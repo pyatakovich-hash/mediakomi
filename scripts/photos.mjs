@@ -122,7 +122,7 @@ async function download(src, dest, sharp) {
       await sharp(buffer)
         .rotate()
         .resize({ width: 960, withoutEnlargement: true })
-        .webp({ quality: 72 })
+        .webp({ quality: 80 })
         .toFile(dest);
       return true;
     } catch (error) {

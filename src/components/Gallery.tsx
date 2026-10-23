@@ -35,22 +35,32 @@ export function Gallery({ photos, alt }: Props) {
         className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain"
       >
         {photos.map((src, i) => (
-          <div key={src} className="h-full w-full shrink-0 snap-center">
+          <div key={src} className="relative h-full w-full shrink-0 snap-center overflow-hidden">
             {broken[i] ? (
               <div className="grid h-full place-items-center text-sm text-mist">
                 Фото не загрузилось
               </div>
             ) : (
               i <= reach && (
-                <img
-                  src={src}
-                  alt={`${alt}, фото ${i + 1} из ${photos.length}`}
-                  className="h-full w-full object-cover"
-                  draggable={false}
-                  decoding="async"
-                  fetchPriority={i === 0 ? "high" : "auto"}
-                  onError={() => setBroken((b) => ({ ...b, [i]: true }))}
-                />
+                <>
+                  {/* то же фото размытым фоном: кадр виден целиком при любой высоте экрана */}
+                  <img
+                    src={src}
+                    alt=""
+                    aria-hidden
+                    className="absolute inset-0 h-full w-full scale-110 object-cover opacity-70 blur-xl"
+                    draggable={false}
+                  />
+                  <img
+                    src={src}
+                    alt={`${alt}, фото ${i + 1} из ${photos.length}`}
+                    className="relative h-full w-full object-contain"
+                    draggable={false}
+                    decoding="async"
+                    fetchPriority={i === 0 ? "high" : "auto"}
+                    onError={() => setBroken((b) => ({ ...b, [i]: true }))}
+                  />
+                </>
               )
             )}
           </div>
